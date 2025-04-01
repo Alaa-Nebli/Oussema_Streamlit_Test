@@ -310,7 +310,7 @@ def generate_response(messages):
     """
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-latest",
+            model="chatgpt-4o-latest",
             messages=messages
         )
         return response.choices[0].message.content
