@@ -19,7 +19,7 @@ if "prompt_system" not in st.session_state:
 # Fonction pour envoyer uniquement les messages utilisateur à l’API
 def envoyer_au_agent(dernier_message):
     try:
-        response = requests.post(AGENT_API_URL, json={dernier_message})
+        response = requests.post(AGENT_API_URL, json={"message": dernier_message})
         response.raise_for_status()
         return response.json().get("response", "Je n'ai pas compris, peux-tu reformuler ?")
     except Exception as e:
