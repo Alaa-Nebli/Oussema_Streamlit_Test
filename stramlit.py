@@ -17,14 +17,21 @@ if "prompt_system" not in st.session_state:
     st.session_state.prompt_system = persona_prompt  # Stocké séparément si besoin
 
 # Fonction pour envoyer uniquement les messages utilisateur à l’API
-def envoyer_au_agent(dernier_message):
+def envoyer_au_agent(message):
     try:
-        response = requests.post(AGENT_API_URL, json={"message": dernier_message})
+        response = requests.post(AGENT_API_URL, json={"message": message})
         response.raise_for_status()
-        return response.json().get("response", "Je n'ai pas compris, peux-tu reformuler ?")
+        data = response.json()
+
+        # Cas où n8n renvoie une liste contenant un seul dict
+        if isinstance(data, list) and isinstance(data[0], dict) and "output" in data[0]:
+            return data[0]["output"]
+
+        return "Je n'ai pas compris la réponse du serveur."
     except Exception as e:
         st.error(f"Erreur API : {str(e)}")
-        return "Erreur serveur. Réessaie dans un instant."
+        return "❌ Erreur serveur. Réessaie dans un instant."
+
 
 # Titre principal
 st.title("🤖 Agent Générateur de Prompts")
