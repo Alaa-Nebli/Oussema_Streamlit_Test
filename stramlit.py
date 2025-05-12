@@ -24,7 +24,7 @@ def envoyer_au_agent(message):
         response = requests.post(
             AGENT_API_URL,
             json={"message": message},
-            timeout=30  # Timeout de 30 secondes
+            timeout=300  # Timeout de 30 secondes
         )
         response.raise_for_status()
         data = response.json()
