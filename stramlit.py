@@ -11,19 +11,21 @@ AGENT_API_URL = "https://automation.neuratech-solutions.com/webhook/fea07efb-43d
 # Page setup
 st.set_page_config(page_title="Agent Générateur de Persona", page_icon="💬", layout="wide")
 
-# Initialize session state safely
-defaults = {
-    "session_id": str(uuid.uuid4()),
-    "messages": [],
-    "prompt_system": "...",  # Replace with your full prompt if needed
-    "user_input": "",
-    "processing": False,
-    "result_queue": Queue(),
-    "progress": 0,
-}
-for key, default in defaults.items():
-    if key not in st.session_state:
-        st.session_state[key] = default
+# Initialize session state variables correctly
+if "session_id" not in st.session_state:
+    st.session_state.session_id = str(uuid.uuid4())
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+if "prompt_system" not in st.session_state:
+    st.session_state.prompt_system = "..."  # Replace with your full prompt if needed
+if "user_input" not in st.session_state:
+    st.session_state.user_input = ""
+if "processing" not in st.session_state:
+    st.session_state.processing = False
+if "result_queue" not in st.session_state:
+    st.session_state.result_queue = Queue()
+if "progress" not in st.session_state:
+    st.session_state.progress = 0
 
 # Run backend agent
 def run_agent(message, queue):
@@ -126,6 +128,11 @@ with st.container():
 # Reset conversation from sidebar
 st.sidebar.header("🧰")
 if st.sidebar.button("🔄 Réinitialiser", disabled=st.session_state.processing):
-    for key in ["messages", "user_input", "progress", "processing"]:
-        st.session_state[key] = [] if isinstance(st.session_state[key], list) else False
-    st.r
+    # Reset session state
+    st.session_state.messages = []
+    st.session_state.user_input = ""
+    st.session_state.progress = 0
+    st.session_state.processing = False
+    # Generate a new session_id
+    st.session_state.session_id = str(uuid.uuid4())
+    st.rerun()
