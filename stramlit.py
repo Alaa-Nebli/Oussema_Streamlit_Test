@@ -14,18 +14,18 @@ st.set_page_config(page_title="Agent Générateur de Persona", page_icon="💬",
 # Persistent session state
 if "session_id" not in st.session_state:
     # Safe session state initialization
-defaults = {
-    "session_id": str(uuid.uuid4()),
-    "messages": [],
-    "prompt_system": "...",  # Replace with your full prompt
-    "user_input": "",
-    "processing": False,
-    "result_queue": Queue(),
-    "progress": 0,
-}
-for key, default in defaults.items():
-    if key not in st.session_state:
-        st.session_state[key] = default
+    defaults = {
+        "session_id": str(uuid.uuid4()),
+        "messages": [],
+        "prompt_system": "...",  # Replace with your full prompt
+        "user_input": "",
+        "processing": False,
+        "result_queue": Queue(),
+        "progress": 0,
+    }
+    for key, default in defaults.items():
+        if key not in st.session_state:
+            st.session_state[key] = default
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
